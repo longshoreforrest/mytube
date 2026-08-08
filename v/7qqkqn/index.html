@@ -40,7 +40,7 @@
   </div>
   <h1>Juvan mökin kierros</h1>
   <div class="meta">
-    <span>8. elokuuta 2026</span>
+    <span title="Kuvausaika">8. elokuuta 2026 klo 9.46</span>
     <span>·</span>
     <span>0:48</span>
     <span class="badge" title="Ei etusivulla eikä hakukoneissa — vain linkin tietävät">Piilotettu linkki</span>
@@ -50,6 +50,51 @@
     <button class="btn primary" id="wa" type="button"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .1-1.7-.1a12 12 0 0 1-5.8-5c-.4-.7-.9-1.6-.9-2.5s.5-1.4.7-1.6c.2-.2.4-.3.6-.3h.5c.2 0 .4 0 .6.4l.8 1.9c.1.2 0 .4-.1.5l-.4.5c-.1.2-.3.3-.1.6a9 9 0 0 0 3.7 3.2c.3.1.4.1.6-.1l.8-1c.2-.2.3-.2.6-.1l1.8.9c.3.1.4.2.5.3 0 .1 0 .6-.2 1.2Z"/></svg>Jaa WhatsAppiin</button>
   </div>
   <div class="desc">Kuvattu 8.8.2026.</div>
+
+  <div class="chainbar">
+    <button class="btn primary" id="chain" type="button">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7L8 5Z"/></svg>
+      <span id="chainTxt">Toista koko ketju</span>
+    </button>
+    <span class="hint">Video ja sen jälkeen ajatus soivat peräkkäin — puhelimen voi laskea kädestä. Yhteensä 1:36.</span>
+  </div>
+  <div class="chain">
+    <div class="item" id="aj-video">
+      <div class="when"><span class="kind">Video</span>
+        <span>klo 9.46</span><span>·</span><span>0:48</span>
+      </div>
+      <h2>Juvan mökin kierros</h2>
+      <button class="open" type="button" id="toVideo">▴ Siirry soittimeen</button>
+    </div>
+    
+    <div class="item" id="aj-a1">
+      <div class="when"><span class="kind">Ajatus</span>
+        <span>klo 13.21</span><span>·</span><span>0:48</span>
+        <span>·</span><span>Tapio</span>
+      </div>
+      <h2>Juvan aikaisempi remontti</h2>
+      <div class="voice" data-aj="a1">
+        <button class="play" type="button" aria-label="Toista ääniviesti">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7L8 5Z"/></svg>
+        </button>
+        <div class="bars"></div>
+        <span class="tm">0:48</span>
+      </div>
+      <audio preload="none" src="https://github.com/longshoreforrest/mytube/releases/download/videot/7qqkqn-a1.m4a"></audio>
+      <div class="card">
+        <p class="joht">Keijo vahvisti mökin rakennushistoriaa ja ehdotti tilan avaamista.</p>
+        <ul><li><span class="ts" data-t="0">0:00</span> Tuvan valkoiset seinäpaneelit ovat Haltex-levyä ja ne on asennettu 60-luvulla saman lattiaremontin yhteydessä. Tieto on Keijolta, ei asiakirjasta.</li><li><span class="ts" data-t="20">0:20</span> Ennen sitä tuvan katto oli korkeampi ja hirret näkyvissä — eli nykyinen sisäkatto on 60-luvun lisäys, ei alkuperäinen.</li><li><span class="ts" data-t="26">0:26</span> Keijon ehdotus: avata mökkiä avarammaksi Pusulan<span class="q" title="Kone ei kuullut tätä varmasti">[?]</span> tyyliin, mahdollisesti väliseiniä purkamalla.</li><li><span class="ts" data-t="40">0:40</span> Tapio pitää ajatusta kiinnostavana. Keijo on tehnyt vastaavaa omalla Mutkan<span class="q" title="Kone ei kuullut tätä varmasti">[?]</span> mökillään.</li></ul>
+        <div class="note"><b>Auki:</b> mitkä väliseinät ovat kantavia, ja onko 60-luvun sisäkaton purkaminen mahdollista ilman että lattiaremontin rakenteita joudutaan avaamaan uudelleen. Kumpaakaan ei nauhalla ratkaista.</div>
+        <button class="open" type="button">▾ Näytä sanatarkka litterointi</button>
+        <div class="lines">
+          <div class="line" data-t="0"><span class="t">0:00</span><span>Juttelin täällä Juvalla Keijon kanssa ja hän vahvisti, että mökin valkoiset seinäpaneelit, jotka on Haltexia, ne on asennettu joskus 60-luvulla, kun tehtiin lattiaremontti.</span></div>
+          <div class="line" data-t="20.8"><span class="t">0:21</span><span>Sitä ennen Keijo sanoi, että myös tuvan katto oli korkeampi ja hirret näkyvissä.</span></div>
+          <div class="line" data-t="26.6"><span class="t">0:27</span><span>Keijo ehdotti, että avaisimme mökkiä avarammaksi Pusulan tyyliin<span class="q" title="Kone ei kuullut tätä varmasti">[?]</span>.</span></div>
+          <div class="line" data-t="37.1"><span class="t">0:37</span><span>Eli mahdollisesti purkaisi väliseiniä ja muuta.</span></div>
+          <div class="line" data-t="40"><span class="t">0:40</span><span>Mielestäni se on ihan mielenkiintoinen ajatus. Keijo on itse tehnyt vähän vastaavia siellä Mutkan<span class="q" title="Kone ei kuullut tätä varmasti">[?]</span> mökillä.</span></div></div>
+      </div>
+    </div>
+  </div>
   <div class="toast" id="toast"></div>
 <script>
 window.__MYPA_SITE__ = "mytube";
@@ -264,7 +309,7 @@ window.__MYPA_EXTRA__ = {"video":"7qqkqn","julkinen":false};
   window.mypa = { send: send, __initialized: true, __self: SELF };
 })();
 </script>
-<script>window.__MYTUBE__ = {"id":"7qqkqn","otsikko":"Juvan mökin kierros","kesto_s":47.72,"renditiot":[{"nimi":"1080p","leveys":1920,"url":"https://github.com/longshoreforrest/mytube/releases/download/videot/7qqkqn-1080p.mp4"},{"nimi":"720p","leveys":1280,"url":"https://github.com/longshoreforrest/mytube/releases/download/videot/7qqkqn-720p.mp4"},{"nimi":"480p","leveys":854,"url":"https://github.com/longshoreforrest/mytube/releases/download/videot/7qqkqn-480p.mp4"}]};</script>
+<script>window.__MYTUBE__ = {"id":"7qqkqn","otsikko":"Juvan mökin kierros","kesto_s":47.72,"renditiot":[{"nimi":"1080p","leveys":1920,"url":"https://github.com/longshoreforrest/mytube/releases/download/videot/7qqkqn-1080p.mp4"},{"nimi":"720p","leveys":1280,"url":"https://github.com/longshoreforrest/mytube/releases/download/videot/7qqkqn-720p.mp4"},{"nimi":"480p","leveys":854,"url":"https://github.com/longshoreforrest/mytube/releases/download/videot/7qqkqn-480p.mp4"}],"ajatukset":[{"id":"a1","kesto_s":48.09}]};</script>
 <script src="https://longshoreforrest.github.io/mytube/player.js" defer></script>
 
 <div class="foot">MyTube — perheen oma videojulkaisu. Tämä video on piilotetun linkin takana.</div>

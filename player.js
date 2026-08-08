@@ -211,4 +211,171 @@
     if (document.visibilityState === "hidden") summary();
   });
   window.addEventListener("pagehide", summary);
+
+  /* ---------- 4. Ajatusketju ---------- */
+
+  var PLAY = "M8 5v14l11-7L8 5Z";
+  var PAUSE = "M7 5h4v14H7zM13 5h4v14h-4z";
+  var BARS = 54;
+
+  var ajatukset = [].slice.call(document.querySelectorAll(".chain .item[id^='aj-']"))
+    .filter(function (el) { return el.querySelector("audio"); })
+    .map(function (el) {
+      return { el: el, id: el.id.replace(/^aj-/, ""), audio: el.querySelector("audio") };
+    });
+
+  function korosta(el) {
+    document.querySelectorAll(".chain .item").forEach(function (x) {
+      x.classList.toggle("on", x === el);
+    });
+  }
+
+  ajatukset.forEach(function (a) {
+    var voice = a.el.querySelector(".voice");
+    var btn = voice.querySelector(".play");
+    var icon = btn.querySelector("svg");
+    var bars = voice.querySelector(".bars");
+    var tm = voice.querySelector(".tm");
+    var lines = a.el.querySelector(".lines");
+    var avaa = a.el.querySelector(".open");
+
+    // Palkisto on kuvitus, ei aaltomuoto — sitä ei teeskennellä analyysiksi.
+    // Sen tehtävä on näyttää edistyminen ja tarjota kelauspinta.
+    for (var i = 0; i < BARS; i++) {
+      var b = document.createElement("i");
+      b.style.height = (30 + 20 * Math.sin(i * 0.9) * Math.sin(i * 0.31)).toFixed(0) + "%";
+      bars.appendChild(b);
+    }
+
+    function kesto() {
+      return (a.audio.duration && isFinite(a.audio.duration)) ? a.audio.duration : 1;
+    }
+
+    btn.addEventListener("click", function () {
+      if (a.audio.paused) { pysaytaMuut(a); a.audio.play(); } else a.audio.pause();
+    });
+
+    bars.addEventListener("click", function (e) {
+      var r = bars.getBoundingClientRect();
+      a.audio.currentTime = ((e.clientX - r.left) / r.width) * kesto();
+      pysaytaMuut(a);
+      a.audio.play();
+    });
+
+    a.audio.addEventListener("play", function () {
+      icon.innerHTML = '<path d="' + PAUSE + '"/>';
+      korosta(a.el);
+      if (!a.aloitettu) {
+        a.aloitettu = true;
+        track("thought_play", { ajatus: a.id });
+      }
+    });
+    a.audio.addEventListener("pause", function () {
+      icon.innerHTML = '<path d="' + PLAY + '"/>';
+    });
+
+    a.audio.addEventListener("timeupdate", function () {
+      var d = kesto(), p = a.audio.currentTime / d;
+      for (var i = 0; i < bars.children.length; i++) {
+        bars.children[i].classList.toggle("done", i / BARS <= p);
+      }
+      tm.textContent = mmss(d - a.audio.currentTime);
+      var cur = -1;
+      lines.querySelectorAll(".line").forEach(function (el, i) {
+        if (a.audio.currentTime >= parseFloat(el.dataset.t)) cur = i;
+      });
+      lines.querySelectorAll(".line").forEach(function (el, i) {
+        el.classList.toggle("cur", i === cur);
+      });
+    });
+
+    a.audio.addEventListener("ended", function () {
+      track("thought_complete", { ajatus: a.id });
+      jatkaKetju(a);
+    });
+
+    // Aikaleima on lähdeviite: napautus vie ääneen siihen kohtaan.
+    a.el.querySelectorAll(".ts, .line").forEach(function (el) {
+      el.addEventListener("click", function () {
+        pysaytaMuut(a);
+        a.audio.currentTime = parseFloat(el.dataset.t) || 0;
+        a.audio.play();
+      });
+    });
+
+    avaa.addEventListener("click", function () {
+      var on = lines.getAttribute("data-on") === "1";
+      lines.setAttribute("data-on", on ? "0" : "1");
+      avaa.textContent = (on ? "▾ Näytä" : "▴ Piilota") + " sanatarkka litterointi";
+      if (!on) track("transcript_open", { ajatus: a.id });
+    });
+  });
+
+  function mmss(s) {
+    s = Math.max(0, Math.round(s || 0));
+    return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0");
+  }
+
+  function pysaytaMuut(paitsi) {
+    if (paitsi !== "video") video.pause();
+    ajatukset.forEach(function (x) { if (x !== paitsi) x.audio.pause(); });
+  }
+
+  var toVideo = document.getElementById("toVideo");
+  if (toVideo) {
+    toVideo.addEventListener("click", function () {
+      document.querySelector(".player").scrollIntoView({ behavior: "smooth", block: "center" });
+      pysaytaMuut("video");
+      video.play().catch(function () {});
+    });
+  }
+
+  /* Koko ketju yhtenä: video, sitten ajatukset järjestyksessä. Tämä on
+     ominaisuuden koko pointti — WhatsAppista tuleva kuuntelija painaa
+     kerran eikä koske puhelimeen enää. */
+  var ketjuPaalla = false;
+  var chainBtn = document.getElementById("chain");
+  var chainTxt = document.getElementById("chainTxt");
+
+  function chainLabel(on) {
+    if (chainTxt) chainTxt.textContent = on ? "Pysäytä ketju" : "Toista koko ketju";
+  }
+
+  function jatkaKetju(edellinen) {
+    if (!ketjuPaalla) return;
+    var i = edellinen === "video" ? 0 : ajatukset.indexOf(edellinen) + 1;
+    if (i >= ajatukset.length) {
+      ketjuPaalla = false;
+      chainLabel(false);
+      korosta(null);
+      track("chain_complete", {});
+      return;
+    }
+    var seuraava = ajatukset[i];
+    seuraava.audio.currentTime = 0;
+    seuraava.audio.play().catch(function () {});
+    seuraava.el.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+
+  video.addEventListener("ended", function () { jatkaKetju("video"); });
+  video.addEventListener("play", function () { korosta(document.getElementById("aj-video")); });
+
+  if (chainBtn) {
+    chainBtn.addEventListener("click", function () {
+      if (ketjuPaalla) {
+        ketjuPaalla = false;
+        chainLabel(false);
+        pysaytaMuut(null);
+        korosta(null);
+        return;
+      }
+      ketjuPaalla = true;
+      chainLabel(true);
+      track("chain_play", { osia: ajatukset.length + 1 });
+      pysaytaMuut("video");
+      video.currentTime = 0;
+      video.play().catch(function () {});
+      document.querySelector(".player").scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+  }
 })();
