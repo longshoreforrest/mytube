@@ -1,14 +1,19 @@
 /* MyTube — perheen oma videojulkaisu.
    Yksi tyylitiedosto sekä etusivulle että katselusivulle. */
 
+/* Väripaletti on tarkoituksella yhdessä paikassa: koko sivuston sävyn
+   säätäminen on näiden arvojen muuttamista, ei sääntöjen etsimistä.
+   Nostettu vaaleammaksi 8.8.2026 — aiempi lähes musta (#0b0e14) oli
+   raskas pitkän tekstin, kuten litteroinnin, lukemiseen. */
 :root {
-  --bg: #0b0e14;
-  --bg-soft: #131722;
-  --line: #232838;
-  --fg: #e8ecf5;
-  --fg-dim: #97a0b5;
-  --accent: #4d7cff;
-  --accent-2: #8b5cf6;
+  --bg: #1c2331;
+  --bg-soft: #273042;
+  --bg-hi: #313b52;
+  --line: #3c4760;
+  --fg: #f2f5fa;
+  --fg-dim: #aab4c9;
+  --accent: #6b93ff;
+  --accent-2: #9b74f8;
   --radius: 14px;
 }
 
@@ -35,7 +40,7 @@ a:hover { text-decoration: underline; }
   gap: 10px;
   padding: 14px 18px;
   border-bottom: 1px solid var(--line);
-  background: rgba(11, 14, 20, .92);
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
   backdrop-filter: saturate(140%) blur(8px);
   position: sticky;
   top: 0;
@@ -108,7 +113,7 @@ h1 {
   text-align: center;
   padding: 24px;
   color: var(--fg-dim);
-  background: rgba(11, 14, 20, .94);
+  background: color-mix(in srgb, var(--bg) 94%, transparent);
   font-size: 15px;
 }
 
@@ -154,7 +159,7 @@ h1 {
   transition: background .15s, border-color .15s;
 }
 
-.btn:hover { background: #1a2030; border-color: #303752; }
+.btn:hover { background: var(--bg-hi); border-color: var(--line); }
 .btn:active { transform: translateY(1px); }
 .btn svg { width: 15px; height: 15px; flex: none; }
 
@@ -196,8 +201,8 @@ select.qual {
   left: 50%;
   bottom: 26px;
   transform: translateX(-50%) translateY(14px);
-  background: #1a2030;
-  border: 1px solid #303752;
+  background: var(--bg-hi);
+  border: 1px solid var(--line);
   color: var(--fg);
   padding: 10px 18px;
   border-radius: 999px;
@@ -279,7 +284,7 @@ select.qual {
   padding: 14px 16px;
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  background: linear-gradient(180deg, #161b29, #121724);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--bg-soft) 85%, var(--fg) 4%), var(--bg-soft));
 }
 
 .chainbar .hint { color: var(--fg-dim); font-size: 13.5px; flex: 1 1 220px; }
@@ -315,8 +320,30 @@ select.qual {
    ilman että hänen tarvitsee lukea mitään. */
 .chain .item.on::before {
   background: var(--accent);
-  box-shadow: 0 0 0 5px rgba(77, 124, 255, .18);
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent) 25%, transparent);
 }
+
+/* Aikaleima: kellonaika ensin ja korostettuna, päivämäärä sen perässä.
+   Ketjun merkinnät ovat useimmiten samalta päivältä, jolloin kellonaika on
+   ainoa erottava tieto — ja se kertoo myös järjestyksen. */
+.stamp { display: inline-flex; align-items: baseline; gap: 7px; }
+.stamp b { color: var(--fg); font-weight: 650; font-size: 14.5px; letter-spacing: -.01em; }
+.stamp .pv { color: var(--fg-dim); font-size: 12.5px; }
+
+.perma { color: var(--fg-dim); text-decoration: none; font-size: 13px; }
+.perma:hover { color: var(--accent); text-decoration: none; }
+
+/* Videon alarivi: laatuvalitsin ja mahdollinen kuvausteksti. */
+.chain .row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.chain .row .kuv { color: var(--fg-dim); font-size: 13.5px; }
+.chain .item.ent .player { margin-top: 2px; }
 
 .chain .when {
   display: flex;
@@ -379,7 +406,7 @@ select.qual {
 .voice .bars i {
   flex: 1;
   min-width: 2px;
-  background: #2b3348;
+  background: color-mix(in srgb, var(--fg-dim) 40%, transparent);
   border-radius: 2px;
   transition: background .12s;
 }
@@ -441,7 +468,7 @@ select.qual {
 .lines[data-on="1"] { display: block; }
 
 .line { display: flex; gap: 10px; padding: 6px 8px; border-radius: 8px; cursor: pointer; }
-.line:hover { background: #1a2030; }
+.line:hover { background: var(--bg-hi); }
 .line.cur { background: rgba(77, 124, 255, .13); }
 
 .line .t {
