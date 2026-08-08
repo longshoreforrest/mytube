@@ -3,17 +3,19 @@
 
 /* Väripaletti on tarkoituksella yhdessä paikassa: koko sivuston sävyn
    säätäminen on näiden arvojen muuttamista, ei sääntöjen etsimistä.
-   Nostettu vaaleammaksi 8.8.2026 — aiempi lähes musta (#0b0e14) oli
-   raskas pitkän tekstin, kuten litteroinnin, lukemiseen. */
+   Vaihdettu vaaleaksi 8.8.2026. Sivulla on litterointeja ja tiivistelmiä,
+   eli enemmän luettavaa tekstiä kuin videosivulla yleensä, ja lähes musta
+   tausta oli siihen raskas. Tausta ei ole puhdas valkoinen vaan hivenen
+   sinertävä: valkoinen välkkyy videon mustan reunan vieressä. */
 :root {
-  --bg: #1c2331;
-  --bg-soft: #273042;
-  --bg-hi: #313b52;
-  --line: #3c4760;
-  --fg: #f2f5fa;
-  --fg-dim: #aab4c9;
-  --accent: #6b93ff;
-  --accent-2: #9b74f8;
+  --bg: #f4f6fb;
+  --bg-soft: #ffffff;
+  --bg-hi: #e9edf7;
+  --line: #d8dfee;
+  --fg: #171c26;
+  --fg-dim: #5b6780;
+  --accent: #3563e9;
+  --accent-2: #7c3aed;
   --radius: 14px;
 }
 
@@ -369,6 +371,7 @@ select.qual {
 
 /* Ääniviesti — tuttu muoto WhatsAppista, tarkoituksella. */
 .voice {
+  box-shadow: 0 1px 2px rgba(20, 30, 60, .05);
   display: flex;
   align-items: center;
   gap: 12px;
@@ -426,6 +429,7 @@ select.qual {
   background: var(--bg-soft);
   padding: 14px 16px;
   margin-top: 12px;
+  box-shadow: 0 1px 2px rgba(20, 30, 60, .05);
 }
 
 .card .joht { margin: 0 0 10px; color: var(--fg); }
@@ -441,7 +445,7 @@ select.qual {
   border-bottom: 1px dashed rgba(77, 124, 255, .5);
 }
 
-.q { color: #e0b341; font-size: .88em; }
+.q { color: #a1600a; font-size: .88em; }
 
 .note {
   margin-top: 10px;

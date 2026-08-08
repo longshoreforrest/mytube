@@ -76,12 +76,20 @@
       return rends[0];
     }
 
-    function lataa(r) {
+    // Katsojan aikomus, ei soittimen tila. Virhe pysäyttää soittimen, joten
+    // `media.paused` on varareitin kohdalla AINA tosi — ja sen varassa
+    // varareitti latasi uuden laadun mutta jätti toiston käynnistämättä.
+    // Se näkyi Androidilla niin, että toistonappia piti painaa kahdesti.
+    var halusiToistaa = false;
+
+    function lataa(r, jatkaSoitto) {
       if (!r) return;
-      // Toiston paikka ja tila säilytetään laadun yli — muuten vaihto
-      // tuntuisi katkolta ja katsoja menettäisi kohdan johon oli päässyt.
+      // Toiston paikka säilytetään laadun yli — muuten vaihto tuntuisi
+      // katkolta ja katsoja menettäisi kohdan johon oli päässyt.
       var t = osa.media.currentTime;
-      var soi = !osa.media.paused && !osa.media.ended;
+      var soi = jatkaSoitto !== undefined
+        ? jatkaSoitto
+        : (!osa.media.paused && !osa.media.ended);
       current = r;
       osa.media.src = r.url;
       osa.media.load();
@@ -121,7 +129,8 @@
       if (vara) {
         track("video_fallback", { video: osa.id, mista: current && current.nimi, mihin: vara.nimi });
         if (sel) sel.value = vara.nimi;
-        lataa(vara);
+        // Jatka toistoa jos katsoja oli sitä pyytänyt: yksi painallus riittää.
+        lataa(vara, halusiToistaa || ketjussa());
         return;
       }
       var p = osa.el.querySelector(".player");
@@ -141,6 +150,7 @@
     }
 
     osa.media.addEventListener("play", function () {
+      halusiToistaa = true;
       pysaytaMuut(osa);
       korosta(osa);
       tikki = Date.now();
@@ -154,6 +164,9 @@
 
     osa.media.addEventListener("pause", function () {
       tikki = null;
+      // Virhe pysäyttää soittimen itsekin; aikomus nollataan vain jos
+      // soitin on toistokelpoisessa tilassa (eli tauko oli käyttäjän).
+      if (!osa.media.error) halusiToistaa = false;
       if (!osa.media.ended) track("video_pause", { video: osa.id, kohta_s: Math.round(osa.media.currentTime) });
     });
 
@@ -274,6 +287,7 @@
   /* ------------------------------------------------------- 3. koko ketju */
 
   var ketjuPaalla = false;
+  function ketjussa() { return ketjuPaalla; }
   var chainBtn = document.getElementById("chain");
   var chainTxt = document.getElementById("chainTxt");
 
