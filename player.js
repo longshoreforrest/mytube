@@ -168,9 +168,29 @@
     track("video_complete", { katsottu_s: Math.round(watched) });
   });
 
+  // Yksi renditio voi puuttua tai olla vielä latautumatta julkaisun jälkeen.
+  // Silloin ei näytetä mustaa ruutua vaan siirrytään seuraavaan laatuun.
+  // Tämä on todellinen vika eikä varotoimi: ensimmäisessä julkaisussa
+  // 1080p-tiedoston lataus katkesi, ja sivu jäi mykäksi vaikka 720p oli ehjä.
+  var kokeillut = {};
   video.addEventListener("error", function () {
     var e = video.error;
     track("video_error", { koodi: e ? e.code : null, laatu: current && current.nimi });
+    if (current) kokeillut[current.nimi] = 1;
+    var vara = rends.filter(function (r) { return !kokeillut[r.nimi]; })[0];
+    if (vara) {
+      track("video_fallback", { mista: current && current.nimi, mihin: vara.nimi });
+      if (sel) sel.value = vara.nimi;
+      load(vara, false);
+      return;
+    }
+    var p = document.querySelector(".player");
+    if (p && !p.querySelector(".virhe")) {
+      var d = document.createElement("div");
+      d.className = "virhe";
+      d.textContent = "Videota ei juuri nyt saada toistettua. Yritä hetken kuluttua uudelleen.";
+      p.appendChild(d);
+    }
   });
 
   // Yhteenveto lähtiessä. visibilitychange on ainoa tapahtuma johon puhelimen

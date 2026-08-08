@@ -98,6 +98,20 @@ h1 {
   background: #000;
 }
 
+/* Näkyy vain jos yksikään renditio ei toistu. Tyhjä musta ruutu ei kerro
+   katsojalle mitään, ja juuri se sattui ensimmäisessä julkaisussa. */
+.player .virhe {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding: 24px;
+  color: var(--fg-dim);
+  background: rgba(11, 14, 20, .94);
+  font-size: 15px;
+}
+
 /* ---------- Videon metatiedot ---------- */
 
 .meta {
