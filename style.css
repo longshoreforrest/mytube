@@ -432,7 +432,20 @@ select.qual {
   box-shadow: 0 1px 2px rgba(20, 30, 60, .05);
 }
 
-.card .joht { margin: 0 0 10px; color: var(--fg); }
+.card .joht { margin: 0 0 10px; color: var(--fg); font-weight: 550; }
+
+/* Teksti tulee ennen ääntä: lukija saa asian heti, ja kuuntelija saa
+   nauhan siitä alta. Tämä rivi sitoo ne yhteen — muuten ääniviesti
+   näyttäisi irralliselta liitteeltä tekstin jälkeen. */
+.kuuntele {
+  margin: 14px 0 8px;
+  color: var(--fg-dim);
+  font-size: 13.5px;
+}
+
+/* Sanatarkka litterointi on oma laatikkonsa äänen jälkeen: se on
+   tarkistusaineistoa, ei sitä mitä sivulle tullaan lukemaan. */
+.card.lit { padding: 4px 16px 12px; }
 .card ul { margin: 0; padding-left: 18px; }
 .card li { margin-bottom: 7px; }
 .card li:last-child { margin-bottom: 0; }
